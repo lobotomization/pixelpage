@@ -7,23 +7,23 @@ canvas, img {
     -ms-interpolation-mode: nearest-neighbor;
     border: 5px solid #ddd;
 }
-canvas#myCanvas { width: 2000px; height: 2000px; } /* 40 * 50 = 2000 */
+canvas#myCanvas { width: 800px; height: 800px; } /* 40 * 50 = 2000 */
 canvas#colorpicker { width: 160px; height: 160px; } /* 40 * 4 = 160 */
 
 /* body { width: 2600px; } */
 
 .pixelboard{
-    width: 55%;
-    margin-right: 2%;
-    float: left;
+    width: fit-content;
+    display: inline-block;
 }
 .pixelboard canvas{
    width: 100%;
 }
 .colorpicker {
-    width: 40%;
-    float: left;
+    width: fit-content;
+    display: inline-block;
+    vertical-align: top;
 }
 .clearfix{
-    clear:both
+    clear: both;
 }

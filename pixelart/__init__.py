@@ -317,23 +317,33 @@ def v8_click():
         return "Error: Board name is not alphabetical"
     else:
         return "Error: Missing 'ox', 'oy', 'board', 'clickx' or 'clicky' field. Please specify all four variables."
-    if 'rclick' in request.args:
-        color = ' 0'
-    else:
-        color = ' 255'
-    opacity = ' 255'
-    array = []
+    red = int(request.args['r'])
+    green = int(request.args['g'])
+    blue = int(request.args['b'])
+    opacity = 255
+    array = [red, green, blue, opacity]
     i = 32*pixelpos(ox + clickx, oy + clicky, 50, 50) #32 bits per pixel
-    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 0 ) + color)
-    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 8 ) + color)
-    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 16) + color)
-    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 24) + opacity)
-    array.append(r.execute_command('bitfield ' + board + ' get u8 ' + str(i + 0))[0])
-    array.append(r.execute_command('bitfield ' + board + ' get u8 ' + str(i + 8))[0])
-    array.append(r.execute_command('bitfield ' + board + ' get u8 ' + str(i + 16))[0])
-    array.append(255)
+    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 0 ) + ' ' + str(red))
+    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 8 ) + ' ' + str(green))
+    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 16) + ' ' + str(blue))
+    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 24) + ' ' + str(opacity))
     sqr = {'data': array, 'height': 1, 'width': 1}
     return jsonify(sqr)
+
+@app.route("/v8/colors", methods=['GET'])
+def v8_color():
+    colors = [140,30,44,255,220,68,60,255,255,140,102,255,199,91,56,255,214,111,36,255,228,186,50,255,33,145,59,255,131,181,53,255,235,213,189,255,102,195,217,255,56,124,238,255,53,57,162,255,153,141,162,255,89,78,111,255,43,26,75,255,8,5,14,255]
+    if 'clickx' and 'clicky' in request.args:
+        clickx = int(request.args['clickx'])
+        clicky = int(request.args['clicky'])
+    else:
+        return jsonify({'data': colors, 'height': 4, 'width': 4})
+    if 'rclick' in request.args:
+        rclick = 1
+    else:
+        rclick = 0
+    pos = 4*pixelpos(clickx, clicky, 4, 4) # Four entries per pixel
+    return jsonify({'data': colors[pos:pos+4], 'height': 1, 'width': 1, 'rclick': rclick})
 
 if __name__ == "__main__":
     app.run()

@@ -2,12 +2,18 @@ Number.prototype.mod = function(n) {
 	    return ((this%n)+n)%n;
 };
 
-var canvas = document.getElementsByTagName('canvas')[0];
+var canvas = document.getElementById('myCanvas');
 var pixelboard = new Image;
 canvas.width = 50;
 canvas.height = 50;
 var ox = 0; // Need to keep track of origin
 var oy = 0; // Using ctx to track origin led to graphical glitches
+var scale = 16;
+var margin = 5; // Size of margin around canvas in pixels
+var offsetX = canvas.offsetLeft + margin; // Top right pixel of canvas
+var offsetY = canvas.offsetTop + margin;
+var lcolor = [255, 255, 255, 255]
+var rcolor = [0, 0, 0, 255] //Used by colorpicker and this script too
 console.log("Board is " + board); //Loaded from outside of script, in html file
 window.onload = function(){		    
 	var ctx = canvas.getContext('2d');
@@ -45,15 +51,15 @@ window.onload = function(){
 	var dragStart,dragged;
 	canvas.addEventListener('mousedown',function(evt){
 		document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
-		lastX = evt.offsetX/40 || (evt.pageX - canvas.offsetLeft)/40;
-		lastY = evt.offsetY/40 || (evt.pageY - canvas.offsetTop)/40;
+		lastX = evt.offsetX/scale || (evt.pageX - canvas.offsetLeft)/scale;
+		lastY = evt.offsetY/scale || (evt.pageY - canvas.offsetTop)/scale;
 		dragStart = ctx.transformedPoint(lastX,lastY);
 		dragged = false;
 	},false);
 	
 	canvas.addEventListener('mousemove',function(evt){
-		lastX = evt.offsetX/40 || (evt.pageX - canvas.offsetLeft)/40;
-		lastY = evt.offsetY/40 || (evt.pageY - canvas.offsetTop)/40;
+		lastX = evt.offsetX/scale || (evt.pageX - canvas.offsetLeft)/scale;
+		lastY = evt.offsetY/scale || (evt.pageY - canvas.offsetTop)/scale;
 		var deadzone = .75	
 		if (dragStart){
 			var pt = ctx.transformedPoint(lastX,lastY);
@@ -71,19 +77,19 @@ window.onload = function(){
 	xmlhttpclick.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			jsonimg = JSON.parse(this.responseText);
+			console.log(jsonimg)
 			var array = new Uint8ClampedArray(jsonimg.data);
 			var sqr = new ImageData(array, jsonimg.width, jsonimg.height);
-	      		ctx.setTransform(1,0,0,1,0,0); // Might not need this
+	      		//ctx.setTransform(1,0,0,1,0,0); // Might not need this
 			ctx.putImageData(sqr, clickx, clicky);  // Draw single pixel
 			pixelboard.src = canvas.toDataURL("image/png") ;
+			console.log("board clicked!")
 		  }
 	};
 
 	var rightclick = false;
 	canvas.addEventListener('mouseup',function(evt){
 		dragStart = null;
-		var offsetX = 13; //Position of top right pixel of canvas
-		var offsetY = 47;
 		if(dragged && !rightclick){
 			var p1 = ctx.transformedPoint(0,0);
 			ox = ox + Math.round(p1.x);
@@ -95,14 +101,9 @@ window.onload = function(){
 			var p1 = ctx.transformedPoint(0,0);
 			ox = ox + Math.round(p1.x);
 			oy = oy + Math.round(p1.y);
-			clickx = Math.floor((evt.clientX - offsetX)/40);
-			clicky = Math.floor((evt.clientY - offsetY)/40);
-			//ctx.beginPath();
-			//ctx.lineWidth = "1";
-			//ctx.strokeStyle = "black";
-			//ctx.rect(clickx, clicky, clickx + 1, clicky + 1);
-			//ctx.stroke();
-			xmlhttpclick.open("GET", "/v8/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board, true);
+			clickx = Math.floor((evt.clientX - offsetX)/scale);
+			clicky = Math.floor((evt.clientY - offsetY)/scale);
+			xmlhttpclick.open("GET", "/v8/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + lcolor[0] + "&g=" + lcolor[1] + "&b=" + lcolor[2], true);
 			xmlhttpclick.send();
 		}	
 		rightclick = false;
@@ -112,14 +113,13 @@ window.onload = function(){
 		    rightclick = true;
 		    evt.preventDefault(); //Prevent right click menu
 		    if(!dragged){
-			var offsetX = 13; //Position of top right pixel of canvas
-			var offsetY = 47;
 			var p1 = ctx.transformedPoint(0,0);
 			ox = ox + Math.round(p1.x);
 			oy = oy + Math.round(p1.y);
-			clickx = Math.floor((evt.clientX - offsetX)/40);
-			clicky = Math.floor((evt.clientY - offsetY)/40);
-			xmlhttpclick.open("GET", "/v8/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&rclick=1", true);
+			console.log(evt.clientX + ' ' + evt.clientY);
+			clickx = Math.floor((evt.clientX - offsetX)/scale);
+			clicky = Math.floor((evt.clientY - offsetY)/scale);
+			xmlhttpclick.open("GET", "/v8/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + rcolor[0] + "&g=" + rcolor[1] + "&b=" + rcolor[2] , true);
 			xmlhttpclick.send();
 		    }
 		    return false; //Prevent right click menu
