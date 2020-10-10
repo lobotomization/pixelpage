@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="static/index.v7.css">
+	</head>
+	<body>
+		<p>Canvas:</p>
+		<canvas id="myCanvas" width="50" height="50" >
+		Your browser does not support the HTML5 canvas tag.
+		</canvas>
+		<form action="/v7">
+			<label for="board">Board name:</label><br>
+			<input type="text" id="board" name="board" value="{{ board }}"><br>
+			<input type="submit" value="Submit">
+		</form> 
+		<script>
+			var board = "{{ board }}";
+		</script>
+		<script type="text/javascript" src="static/index.v7.js"></script>
+	</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="static/index.v8.css">
+	</head>
+	<body>
+		<div class="pixelboard">
+			<p>Canvas:</p>
+			<canvas id="myCanvas" width="50" height="50" >
+			Your browser does not support the HTML5 canvas tag.
+			</canvas>
+			<form action="/v8">
+				<label for="board">Board name:</label><br>
+				<input type="text" id="board" name="board" value="{{ board }}"><br>
+				<input type="submit" value="Submit">
+			</form> 
+		</div>
+		<div class="colorpicker">
+			<canvas id="colorpicker" width="4" height="4" >
+			Your browser does not support the HTML5 canvas tag.
+			</canvas>
+			my nipples look like milkduds
+		</div>
+		<div class="clearfix"></div>
+		<script>
+			var board = "{{ board }}";
+		</script>
+		<script type="text/javascript" src="static/index.v8.js"></script>
+	</body>
+</html>

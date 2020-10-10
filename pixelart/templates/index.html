@@ -1,0 +1,17 @@
+<p>Canvas:</p>
+<canvas id="myCanvas" width="300" height="300" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<script>
+var canvas = document.getElementById('myCanvas');
+var ctx = canvas.getContext('2d');
+ctx.scale(2, 2)
+var array = new Uint8ClampedArray({{ sqr.data }});
+var sqr = new ImageData(array, {{ sqr.width }}, {{ sqr.height }});
+// it can't draw it at once. it has to wait till image is loaded
+//ctx.drawImage(img, 0, 0);
+console.log('WxH: ' + sqr.width + 'x' + sqr.height)
+ctx.putImageData(sqr, 0, 0);  // draw Image on canvas
+
+</script>
