@@ -43,7 +43,7 @@ window.onload = function(){
 			pixelboard.src = canvas.toDataURL("image/png") ;
 		  }
 	};
-	xmlhttpapi.open("GET", "/v9/api?ox=" + ox + "&oy=" + oy + "&board=" + board, true);
+	xmlhttpapi.open("GET", "/v10/api?ox=" + ox + "&oy=" + oy + "&board=" + board, true);
 	xmlhttpapi.send();	
       
 
@@ -94,7 +94,7 @@ window.onload = function(){
 			var p1 = ctx.transformedPoint(0,0);
 			ox = ox + Math.round(p1.x);
 			oy = oy + Math.round(p1.y);
-			xmlhttpapi.open("GET", "/v9/api?ox=" + ox + "&oy=" + oy + "&board=" + board, true);
+			xmlhttpapi.open("GET", "/v10/api?ox=" + ox + "&oy=" + oy + "&board=" + board, true);
 			xmlhttpapi.send();
 		}
 		else if(!rightclick){
@@ -103,7 +103,7 @@ window.onload = function(){
 			oy = oy + Math.round(p1.y);
 			clickx = Math.floor((evt.clientX - offsetX)/scale);
 			clicky = Math.floor((evt.clientY - offsetY)/scale);
-			xmlhttpclick.open("GET", "/v9/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + lcolor[0] + "&g=" + lcolor[1] + "&b=" + lcolor[2], true);
+			xmlhttpclick.open("GET", "/v10/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + lcolor[0] + "&g=" + lcolor[1] + "&b=" + lcolor[2], true);
 			xmlhttpclick.send();
 		}	
 		rightclick = false;
@@ -120,7 +120,7 @@ window.onload = function(){
 			console.log(evt.clientX + ' ' + evt.clientY);
 			clickx = Math.floor((evt.clientX - offsetX)/scale);
 			clicky = Math.floor((evt.clientY - offsetY)/scale);
-			xmlhttpclick.open("GET", "/v9/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + rcolor[0] + "&g=" + rcolor[1] + "&b=" + rcolor[2] , true);
+			xmlhttpclick.open("GET", "/v10/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + rcolor[0] + "&g=" + rcolor[1] + "&b=" + rcolor[2] , true);
 			xmlhttpclick.send();
 		    }
 		    return false; //Prevent right click menu

@@ -4,9 +4,9 @@ import redis
 import random
 
 r = redis.Redis(host='localhost', port=6379, db=0)
-#@app.route("/v9", methods=['GET'])
-def v9():
-    template  = "index.v9.html" 
+#@app.route("/v10", methods=['GET'])
+def v10():
+    template  = "index.v10.html" 
     if 'board' not in request.args:
         board = 'test';
     else:
@@ -15,8 +15,8 @@ def v9():
         return "Error: Board name is not alphabetical"
     return render_template(template, board=board)
 
-#@app.route("/v9/api", methods=['GET'])
-def v9_api():
+#@app.route("/v10/api", methods=['GET'])
+def v10_api():
     if 'ox' and 'oy' and 'board' in request.args:
         ox    = int(request.args['ox'])
         oy    = int(request.args['oy'])
@@ -49,8 +49,8 @@ def v9_api():
     sqr = {'data': array, 'height': 50, 'width': 50}
     return jsonify(sqr)
 
-#@app.route("/v9/click", methods=['GET'])
-def v9_click():
+#@app.route("/v10/click", methods=['GET'])
+def v10_click():
     if 'ox' and 'oy' and 'board' and 'clickx' and 'clicky' in request.args:
         ox = int(request.args['ox'])
         oy = int(request.args['oy'])
@@ -84,8 +84,8 @@ def v9_click():
     sqr = {'data': array, 'height': 1, 'width': 1}
     return jsonify(sqr)
 
-#@app.route("/v9/colors", methods=['GET'])
-def v9_color():
+#@app.route("/v10/colors", methods=['GET'])
+def v10_color():
     colors = [140,30,44,255,220,68,60,255,255,140,102,255,199,91,56,255,214,111,36,255,228,186,50,255,33,145,59,255,131,181,53,255,235,213,189,255,102,195,217,255,56,124,238,255,53,57,162,255,153,141,162,255,89,78,111,255,43,26,75,255,8,5,14,255]
     if 'clickx' and 'clicky' in request.args:
         clickx = int(request.args['clickx'])

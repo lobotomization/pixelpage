@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="static/index.v10.css">
+	</head>
+	<body>
+		<div class="pixelboard">
+			<canvas id="myCanvas" width="50" height="50" >
+			Your browser does not support the HTML5 canvas tag.
+			</canvas>
+			<form action="/v10">
+				<label for="board">Board name:</label><br>
+				<input type="text" id="board" name="board" value="{{ board }}"><br>
+				<input type="submit" value="Submit">
+			</form> 
+		</div>
+		<div class="colorpicker">
+			<canvas id="colorpicker" width="4" height="4" >
+			Your browser does not support the HTML5 canvas tag.
+			</canvas>
+		</div>
+		<div class="clearfix"></div>
+		<script>
+			var board = "{{ board }}";
+		</script>
+		<script type="text/javascript" src="static/index.v10.pixelboard.js"></script>
+		<script type="text/javascript" src="static/index.v10.colorpicker.js"></script>
+	</body>
+</html>
