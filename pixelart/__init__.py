@@ -1,3 +1,4 @@
+from . import v11
 from . import v10
 from . import v9
 from . import v8
@@ -51,6 +52,10 @@ app.add_url_rule("/v10", view_func=v10.v10)
 app.add_url_rule("/v10/api", view_func=v10.v10_api)
 app.add_url_rule("/v10/click", view_func=v10.v10_click)
 app.add_url_rule("/v10/colors", view_func=v10.v10_color)
+app.add_url_rule("/v11", view_func=v11.v11)
+app.add_url_rule("/v11/api", view_func=v11.v11_api)
+app.add_url_rule("/v11/click", view_func=v11.v11_click)
+app.add_url_rule("/v11/colors", view_func=v11.v11_color)
 
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="static/index.v10.css">
+		<link rel="stylesheet" href="static/index.v11.css">
 		<style>
 			canvas#myCanvas {width: {{ size.width }}px; height: {{ size.height }}px;}
 		</style>
@@ -34,7 +34,7 @@
 			</div>
 			<br>
 			<div class="board-controls">
-				<form action="/v10">
+				<form action="/v11">
 					<label for="board">Board name:</label><br>
 					<input type="text" id="board" name="board" value="{{ board }}"><br>
 					Height: 
@@ -54,7 +54,7 @@
 			var height = {{ height }};
 			var width = {{ width }};
 		</script>
-		<script type="text/javascript" src="static/index.v10.pixelboard.js"></script>
-		<script type="text/javascript" src="static/index.v10.colorpicker.js"></script>
+		<script type="text/javascript" src="static/index.v11.pixelboard.js"></script>
+		<script type="text/javascript" src="static/index.v11.colorpicker.js"></script>
 	</body>
 </html>
