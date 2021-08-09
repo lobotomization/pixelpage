@@ -1,16 +1,21 @@
 from . import utils
-from flask import Flask, render_template, send_file, jsonify, request
+from flask import Flask, Response, render_template, send_file, jsonify, request
 import redis
 import random
 import colorsys
+import ast
+import json
 
 r = redis.Redis(host='localhost', port=6379, db=0)
+db = '/tmp/db.db'
+max_height = 500
+max_width = 500
 
-max_height = 100
-max_width = 100
+con = utils.connect_db(db)
 
 #@app.route("/v11", methods=['GET'])
 def v11():
+    utils.create_table(con)
     template  = "index.v11.html" 
     board = 'test'
     scale = 16
@@ -53,8 +58,20 @@ def v11_api():
     if height > max_height:
         height = max_height
 
-    array = []
+    opixels = []
     for y in range(oy, oy + height):
+        line    = []
+        i = 4*utils.pixelpos(ox, y, 1000, 1000)
+        line_o_pixels = r.execute_command('getrange ' + board + ' ' + str(i) + ' ' + str(i + 4*width - 1))
+        #ba = bytearray(line_o_pixels)
+        line.extend(line_o_pixels)
+        while len(line) < 4*width:
+            line.extend([255, 255, 255, 255])
+        opixels.extend(line)
+    sqr = {'data': opixels, 'height': height, 'width': width}
+    return jsonify(sqr)
+
+'''
         for x in range(ox, ox + width):
             if x > 0 and y >= 0:
                 quadrant = '1'
@@ -66,15 +83,30 @@ def v11_api():
                 quadrant = '4'
             else:
                 quadrant = '1'
+            secox, secoy   = utils.sector(ox, oy, 1000, 1000)
+            secoxw, secoyh = utils.sector(ox + width, oy + height, 1000, 1000)
+            if secoxw - secox == 0 and secoyh - secoy == 0:
+                utils.pixelpos(ox, oy, 1000, 1000)
+                for y in range(oy, oy + height):
 
-            i = 32*utils.diagpixelpos(x, y) #32 bits per pixel
+            if secoxw - secox == 0 and secoyh - secoy == 1:
+                    
+            if secoxw - secox == 1 and secoyh - secoy == 0:
 
-            array.append(r.execute_command('bitfield ' + quadrant + board + ' get u8 ' + str(i + 0))[0])
-            array.append(r.execute_command('bitfield ' + quadrant + board + ' get u8 ' + str(i + 8))[0])
-            array.append(r.execute_command('bitfield ' + quadrant + board + ' get u8 ' + str(i + 16))[0])
-            array.append(255)
-    sqr = {'data': array, 'height': height, 'width': width}
-    return jsonify(sqr)
+            if secoxw - secox == 1 and secoyh - secoy == 1:
+
+
+            i      = str(32*utils.diagpixelpos(x, y)) #32 bits per pixel
+            start  = str(32*utils.diagpixelpos(ox, oy)) #32 bits per pixel
+            end    = str(32*utils.diagpixelpos(ox + width-1, oy + height-1)) #32 bits per pixel 
+            pixels = r.execute_command('getrange ' + quadrant + board + ' ' + start + ' '  + end)
+            #rgb = r.execute_command('bitfield ' + quadrant + board + ' get u24 ' + i)[0]
+            #blue = rgb%256
+            #green = (rgb>>8)%256
+            #red = (rgb>>16)%256
+            array.extend([red, green, blue, 255])
+'''
+
 
 #@app.route("/v11/click", methods=['GET'])
 def v11_click():
@@ -103,12 +135,15 @@ def v11_click():
         quadrant = '4'
     else:
         quadrant = '1'
-    i = 32*utils.diagpixelpos(ox + clickx, oy + clicky) #32 bits per pixel
-    r.execute_command('bitfield ' + quadrant + board + ' set u8 ' + str(i + 0 ) + ' ' + str(red))
-    r.execute_command('bitfield ' + quadrant + board + ' set u8 ' + str(i + 8 ) + ' ' + str(green))
-    r.execute_command('bitfield ' + quadrant + board + ' set u8 ' + str(i + 16) + ' ' + str(blue))
-    r.execute_command('bitfield ' + quadrant + board + ' set u8 ' + str(i + 24) + ' ' + str(opacity))
+    i = 32*utils.pixelpos(ox + clickx, oy + clicky, 1000, 1000) #32 bits per pixel
+    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 0 ) + ' ' + str(red))
+    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 8 ) + ' ' + str(green))
+    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 16) + ' ' + str(blue))
+    r.execute_command('bitfield ' + board + ' set u8 ' + str(i + 24) + ' ' + str(opacity))
     sqr = {'data': array, 'height': 1, 'width': 1}
+    for sub in utils.get_entries(con):
+        subobj = ast.literal_eval(sub[0])
+        utils.send_web_push(subobj, str(sqr))
     return jsonify(sqr)
 
 #@app.route("/v11/colors", methods=['GET'])
@@ -135,3 +170,19 @@ def v11_color():
         rclick = 0
     pos = 4*utils.pixelpos(clickx, clicky, gridsize, gridsize) # Four entries per pixel
     return jsonify({'data': colors[pos:pos+4], 'height': 1, 'width': 1, 'rclick': rclick})
+
+#@app.route("/v11/subscription/", methods=["GET", "POST"])
+def subscription():
+    """
+        POST creates a subscription
+        GET returns vapid public key which clients uses to send around push notification
+    """
+
+    if request.method == "GET":
+        return Response(response=json.dumps({"public_key": utils.VAPID_PUBLIC_KEY}),
+            headers={"Access-Control-Allow-Origin": "*"}, content_type="application/json")
+
+    subscription_token = request.get_json("subscription_token")
+    utils.insert_entry(con, subscription_token)
+    return Response(status=201, mimetype="application/json")
+

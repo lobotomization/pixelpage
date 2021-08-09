@@ -11,9 +11,9 @@ var oy = 0; // Using ctx to track origin led to graphical glitches
 var margin = 5; // Size of margin around canvas in pixels
 var offsetX = canvas.offsetLeft + margin; // Top right pixel of canvas
 var offsetY = canvas.offsetTop + margin;
-var lcolor = [255, 255, 255, 255]
+var lcolor = [0, 0, 0, 255]
 var rcolor = [255, 255, 255, 255] //Used by colorpicker and this script too
-console.log("Board is " + board); //Loaded from outside of script, in html file
+//console.log("Board is " + board); //Loaded from outside of script, in html file
 window.onload = function(){		    
 	var ctx = canvas.getContext('2d');
 	trackTransforms(ctx);	 
@@ -76,13 +76,11 @@ window.onload = function(){
 	xmlhttpclick.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			jsonimg = JSON.parse(this.responseText);
-			console.log(jsonimg)
 			var array = new Uint8ClampedArray(jsonimg.data);
 			var sqr = new ImageData(array, jsonimg.width, jsonimg.height);
 	      		//ctx.setTransform(1,0,0,1,0,0); // Might not need this
 			ctx.putImageData(sqr, clickx, clicky);  // Draw single pixel
 			pixelboard.src = canvas.toDataURL("image/png") ;
-			console.log("board clicked!")
 		  }
 	};
 
@@ -116,7 +114,6 @@ window.onload = function(){
 			var p1 = ctx.transformedPoint(0,0);
 			ox = ox + Math.round(p1.x);
 			oy = oy + Math.round(p1.y);
-			console.log(evt.clientX + ' ' + evt.clientY);
 			clickx = Math.floor((evt.clientX - offsetX)/scale);
 			clicky = Math.floor((evt.clientY - offsetY)/scale);
 			xmlhttpclick.open("GET", "/v11/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + rcolor[0] + "&g=" + rcolor[1] + "&b=" + rcolor[2] , true);
