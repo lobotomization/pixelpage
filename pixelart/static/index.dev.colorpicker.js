@@ -18,7 +18,7 @@ xmlhttppicker.onreadystatechange = function() {
 		pickerctx.putImageData(sqr, 0, 0);  // draw Image on picker
 	  }
 };
-xmlhttppicker.open("GET", "/v11/colors", true);
+xmlhttppicker.open("GET", "/dev/colors", true);
 xmlhttppicker.send();	
 
 
@@ -51,7 +51,7 @@ xmlhttpclick.onreadystatechange = function() {
 		//Use this to show which color is picked
 	  }
 };
-xmlhttpclick.open("GET", "/v11/colors?clickx=0&clicky=0", true);
+xmlhttpclick.open("GET", "/dev/colors?clickx=0&clicky=0", true);
 xmlhttpclick.send();
 
 var rightclick = false;
@@ -60,7 +60,7 @@ picker.addEventListener('mouseup',function(evt){
 	if(!rightclick){
 		clickx = Math.floor((evt.clientX - pickeroffsetX)/pickerscale);
 		clicky = Math.floor((evt.clientY - pickeroffsetY)/pickerscale);
-		xmlhttpclick.open("GET", "/v11/colors?clickx=" + clickx + "&clicky=" + clicky, true);
+		xmlhttpclick.open("GET", "/dev/colors?clickx=" + clickx + "&clicky=" + clicky, true);
 		xmlhttpclick.send();
 	}	
 	rightclick = false;
@@ -72,7 +72,7 @@ picker.addEventListener('contextmenu', function(evt) {
 	    if(!dragged){
 		clickx = Math.floor((evt.clientX - pickeroffsetX)/pickerscale);
 		clicky = Math.floor((evt.clientY - pickeroffsetY)/pickerscale);
-		xmlhttpclick.open("GET", "/v11/colors?clickx=" + clickx + "&clicky=" + clicky + "&rclick=1", true);
+		xmlhttpclick.open("GET", "/dev/colors?clickx=" + clickx + "&clicky=" + clicky + "&rclick=1", true);
 		xmlhttpclick.send();
 	    }
 	    return false; //Prevent right click menu

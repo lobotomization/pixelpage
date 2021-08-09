@@ -50,7 +50,7 @@ function updateSubscriptionOnServer(subscription) {
 			var response = JSON.parse(this.responseText);
 		}
 	};
-	xmlhttpsubstr.open("POST", "/v11/subscription", true);
+	xmlhttpsubstr.open("POST", "/dev/subscription", true);
 	xmlhttpsubstr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	xmlhttpsubstr.send(JSON.stringify(subscription));
 	/*
@@ -192,5 +192,5 @@ xmlhttpsub.onreadystatechange = function() {
 		localStorage.setItem('applicationServerPublicKey', response.public_key);
 	}
 };
-xmlhttpsub.open("GET", "/v11/subscription", true);
+xmlhttpsub.open("GET", "/dev/subscription", true);
 xmlhttpsub.send();

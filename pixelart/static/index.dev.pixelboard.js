@@ -42,7 +42,7 @@ window.onload = function(){
 			pixelboard.src = canvas.toDataURL("image/png") ;
 		  }
 	};
-	xmlhttpapi.open("GET", "/v11/api?ox=" + ox + "&oy=" + oy + "&board=" + board + "&width=" + width + "&height=" + height, true);
+	xmlhttpapi.open("GET", "/dev/api?ox=" + ox + "&oy=" + oy + "&board=" + board + "&width=" + width + "&height=" + height, true);
 	xmlhttpapi.send();	
       
 
@@ -91,7 +91,7 @@ window.onload = function(){
 			var p1 = ctx.transformedPoint(0,0);
 			ox = ox + Math.round(p1.x);
 			oy = oy + Math.round(p1.y);
-			xmlhttpapi.open("GET", "/v11/api?ox=" + ox + "&oy=" + oy + "&board=" + board + "&width=" + width + "&height=" + height, true);
+			xmlhttpapi.open("GET", "/dev/api?ox=" + ox + "&oy=" + oy + "&board=" + board + "&width=" + width + "&height=" + height, true);
 			xmlhttpapi.send();
 		}
 		else if(!rightclick){
@@ -100,7 +100,7 @@ window.onload = function(){
 			oy = oy + Math.round(p1.y);
 			clickx = Math.floor((evt.clientX - offsetX)/scale);
 			clicky = Math.floor((evt.clientY - offsetY)/scale);
-			xmlhttpclick.open("GET", "/v11/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + lcolor[0] + "&g=" + lcolor[1] + "&b=" + lcolor[2], true);
+			xmlhttpclick.open("GET", "/dev/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + lcolor[0] + "&g=" + lcolor[1] + "&b=" + lcolor[2], true);
 			xmlhttpclick.send();
 		}	
 		rightclick = false;
@@ -116,7 +116,7 @@ window.onload = function(){
 			oy = oy + Math.round(p1.y);
 			clickx = Math.floor((evt.clientX - offsetX)/scale);
 			clicky = Math.floor((evt.clientY - offsetY)/scale);
-			xmlhttpclick.open("GET", "/v11/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + rcolor[0] + "&g=" + rcolor[1] + "&b=" + rcolor[2] , true);
+			xmlhttpclick.open("GET", "/dev/click?ox=" + ox + "&oy=" + oy + "&clickx=" + clickx + "&clicky=" + clicky + "&board=" + board + "&r=" + rcolor[0] + "&g=" + rcolor[1] + "&b=" + rcolor[2] , true);
 			xmlhttpclick.send();
 		    }
 		    return false; //Prevent right click menu
