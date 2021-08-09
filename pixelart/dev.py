@@ -13,10 +13,10 @@ max_width = 500
 
 con = utils.connect_db(db)
 
-#@app.route("/v11", methods=['GET'])
-def v11():
+#@app.route("/dev", methods=['GET'])
+def dev():
     utils.create_table(con)
-    template  = "index.v11.html" 
+    template  = "index.dev.html" 
     board = 'test'
     scale = 16
     width = 50
@@ -39,8 +39,8 @@ def v11():
     size = {'width':width*scale, 'height':height*scale}
     return render_template(template, board=board, size=size, scale=scale, width=width, height=height)
 
-#@app.route("/v11/api", methods=['GET'])
-def v11_api():
+#@app.route("/dev/api", methods=['GET'])
+def dev_api():
     if 'ox' and 'oy' and 'board' and 'width' and 'height' in request.args:
         ox     = int(request.args['ox'])
         oy     = int(request.args['oy'])
@@ -108,8 +108,8 @@ def v11_api():
 '''
 
 
-#@app.route("/v11/click", methods=['GET'])
-def v11_click():
+#@app.route("/dev/click", methods=['GET'])
+def dev_click():
     if 'ox' and 'oy' and 'board' and 'clickx' and 'clicky' in request.args:
         ox = int(request.args['ox'])
         oy = int(request.args['oy'])
@@ -146,8 +146,8 @@ def v11_click():
         utils.send_web_push(subobj, str(sqr))
     return jsonify(sqr)
 
-#@app.route("/v11/colors", methods=['GET'])
-def v11_color():
+#@app.route("/dev/colors", methods=['GET'])
+def dev_color():
     gridsize = 100
     values = [0, 51, 102, 153, 204, 255]
     colors = []
@@ -171,7 +171,7 @@ def v11_color():
     pos = 4*utils.pixelpos(clickx, clicky, gridsize, gridsize) # Four entries per pixel
     return jsonify({'data': colors[pos:pos+4], 'height': 1, 'width': 1, 'rclick': rclick})
 
-#@app.route("/v11/subscription/", methods=["GET", "POST"])
+#@app.route("/dev/subscription/", methods=["GET", "POST"])
 def subscription():
     """
         POST creates a subscription

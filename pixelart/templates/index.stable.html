@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="static/index.v11.css">
+		<link rel="stylesheet" href="static/index.stable.css">
 		<style>
 			canvas#myCanvas {width: {{ size.width }}px; height: {{ size.height }}px;}
 		</style>
@@ -34,7 +34,7 @@
 			</div>
 			<br>
 			<div class="board-controls">
-				<form action="/v11">
+				<form action="/stable">
 					<label for="board">Board name:</label><br>
 					<input type="text" id="board" name="board" value="{{ board }}"><br>
 					Height: 
@@ -54,11 +54,7 @@
 			var height = {{ height }};
 			var width = {{ width }};
 		</script>
-		<script type="text/javascript" src="static/index.v11.pixelboard.js"></script>
-		<script type="text/javascript" src="static/index.v11.colorpicker.js"></script>
-		<button disabled class="js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-			Enable Live Updates
-		</button>
-		<script src="{{ url_for('static',filename='main.js') }}"></script>
+		<script type="text/javascript" src="static/index.stable.pixelboard.js"></script>
+		<script type="text/javascript" src="static/index.stable.colorpicker.js"></script>
 	</body>
 </html>

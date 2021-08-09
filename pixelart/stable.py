@@ -9,9 +9,9 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 max_height = 100
 max_width = 100
 
-#@app.route("/v10", methods=['GET'])
-def v10():
-    template  = "index.v10.html" 
+#@app.route("/stable", methods=['GET'])
+def stable():
+    template  = "index.stable.html" 
     board = 'test'
     scale = 16
     width = 50
@@ -34,8 +34,8 @@ def v10():
     size = {'width':width*scale, 'height':height*scale}
     return render_template(template, board=board, size=size, scale=scale, width=width, height=height)
 
-#@app.route("/v10/api", methods=['GET'])
-def v10_api():
+#@app.route("/stable/api", methods=['GET'])
+def stable_api():
     if 'ox' and 'oy' and 'board' and 'width' and 'height' in request.args:
         ox     = int(request.args['ox'])
         oy     = int(request.args['oy'])
@@ -76,8 +76,8 @@ def v10_api():
     sqr = {'data': array, 'height': height, 'width': width}
     return jsonify(sqr)
 
-#@app.route("/v10/click", methods=['GET'])
-def v10_click():
+#@app.route("/stable/click", methods=['GET'])
+def stable_click():
     if 'ox' and 'oy' and 'board' and 'clickx' and 'clicky' in request.args:
         ox = int(request.args['ox'])
         oy = int(request.args['oy'])
@@ -111,8 +111,8 @@ def v10_click():
     sqr = {'data': array, 'height': 1, 'width': 1}
     return jsonify(sqr)
 
-#@app.route("/v10/colors", methods=['GET'])
-def v10_color():
+#@app.route("/stable/colors", methods=['GET'])
+def stable_color():
     gridsize = 100
     values = [0, 51, 102, 153, 204, 255]
     colors = []
