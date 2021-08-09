@@ -51,6 +51,8 @@ xmlhttpclick.onreadystatechange = function() {
 		//Use this to show which color is picked
 	  }
 };
+xmlhttpclick.open("GET", "/v11/colors?clickx=0&clicky=0", true);
+xmlhttpclick.send();
 
 var rightclick = false;
 picker.addEventListener('mouseup',function(evt){
